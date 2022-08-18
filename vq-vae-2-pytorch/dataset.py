@@ -8,7 +8,7 @@ from torchvision import datasets
 import lmdb
 
 
-CodeRow = namedtuple('CodeRow', ['top', 'bottom', 'filename'])
+CodeRow = namedtuple('CodeRow', ['top', 'bottom', 'label'])
 
 
 class ImageFileDataset(datasets.ImageFolder):
@@ -48,4 +48,4 @@ class LMDBDataset(Dataset):
 
             row = pickle.loads(txn.get(key))
 
-        return torch.from_numpy(row.top), torch.from_numpy(row.bottom), row.filename
+        return torch.from_numpy(row.top), torch.from_numpy(row.bottom), row.label

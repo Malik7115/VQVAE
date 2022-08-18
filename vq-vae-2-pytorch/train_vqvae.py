@@ -88,14 +88,14 @@ def main(args):
 
     transform = transforms.Compose(
         [
-            transforms.Resize(args.size),
-            transforms.CenterCrop(args.size),
+            # transforms.Resize(args.size),
+            # transforms.CenterCrop(args.size),
             transforms.ToTensor(),
-            transforms.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5]),
+            # transforms.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5]),
         ]
     )
 
-    dataset = datasets.ImageFolder(args.path, transform=transform)
+    dataset = datasets.CIFAR10(root= '/home/ubuntu/exp_temp', download= True, transform=transform)
     sampler = dist.data_sampler(dataset, shuffle=True, distributed=args.distributed)
     loader = DataLoader(
         dataset, batch_size=128 // args.n_gpu, sampler=sampler, num_workers=2
@@ -139,11 +139,11 @@ if __name__ == "__main__":
     )
     parser.add_argument("--dist_url", default=f"tcp://127.0.0.1:{port}")
 
-    parser.add_argument("--size", type=int, default=256)
+    parser.add_argument("--size", type=int, default=512)
     parser.add_argument("--epoch", type=int, default=560)
     parser.add_argument("--lr", type=float, default=3e-4)
     parser.add_argument("--sched", type=str)
-    parser.add_argument("path", type=str)
+    # parser.add_argument("path", type=str)
 
     args = parser.parse_args()
 
